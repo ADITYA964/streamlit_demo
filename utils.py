@@ -1,20 +1,12 @@
-#pip install tensorflow==1.14
-#pip install keras==2.2.5
-# UTILS FILE
 import keras
 from keras.applications.densenet import DenseNet121
 from keras.models import Model
-from keras.layers import Dense, Activation, Flatten, Dropout, BatchNormalization, GlobalAveragePooling2D
-from keras.callbacks import ModelCheckpoint, CSVLogger, LearningRateScheduler, ReduceLROnPlateau, EarlyStopping, TensorBoard
+from keras.layers import Dense, GlobalAveragePooling2D
 from keras import backend as K
-from keras.preprocessing import image
-from keras.preprocessing.image import ImageDataGenerator
-import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2
-import time
-from PIL import Image, ImageOps, ImageFile
+from PIL import Image, ImageOps
 import streamlit as st
 
 def get_mean_std_per_batch(X):
