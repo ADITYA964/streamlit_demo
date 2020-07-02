@@ -1,0 +1,11 @@
+###### Requirements without Version Specifiers ######`
+streamlit
+opencv-python
+pillow
+matplotlib
+numpy
+seaborn
+
+###### Requirements with Version Specifiers ######`
+tensorflow==1.14
+keras==2.2.5
