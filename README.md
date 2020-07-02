@@ -1,5 +1,4 @@
 # streamlit_demo
-[WebApp URL](https://fierce-springs-56965.herokuapp.com)
 ====
 Overview
 
@@ -31,6 +30,6 @@ https://gilberttanner.com/blog/deploying-your-streamlit-dashboard-with-heroku
 [T.Harada](https://github.com/Taiki92777)
 
 ## Code reference
-[CheXNet](https://arxiv.org/abs/1711.05225)
-[Coursera AI for medicine](https://www.coursera.org/specializations/ai-for-medicine)
-[Streamlit documentation](https://docs.streamlit.io/en/stable/)
+* [CheXNet](https://arxiv.org/abs/1711.05225)
+* [Coursera AI for medicine](https://www.coursera.org/specializations/ai-for-medicine)
+* [Streamlit documentation](https://docs.streamlit.io/en/stable/)
