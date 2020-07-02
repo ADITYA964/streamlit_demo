@@ -15,7 +15,7 @@ def get_mean_std_per_batch(X):
     return mean, std    
         
 def preprocess(image, H = 320, W = 320):
-    """Load and preprocess image."""
+    """resize and normalize image."""
     # Create the array of the right shape to feed into the keras model
     data = np.ndarray(shape=(1, H, W, 3), dtype=np.float32)
     #image sizing
@@ -59,7 +59,7 @@ def load_coursera_model(image):
 
 @st.cache
 def get_prediction(image, model):
-    # return predicted labels & heatmap arrays
+    """return labels and predicted values of probability"""
     x = preprocess(image)
     labels = ['Cardiomegaly', 'Emphysema', 'Effusion', 'Hernia', 'Infiltration', 'Mass', 'Nodule', 'Atelectasis',
               'Pneumothorax', 'Pleural_Thickening', 'Pneumonia', 'Fibrosis', 'Edema', 'Consolidation']
@@ -68,6 +68,7 @@ def get_prediction(image, model):
 
 @st.cache(suppress_st_warning=True) 
 def get_heatmaps(image, model):
+    """return heatmaps of 14 common diseases"""
     x = preprocess(image)
     heatmaps = []
     
@@ -88,10 +89,8 @@ def grad_cam(input_model, image, category_index, layer_name='conv5_block16_conca
     Args:
     input_model (Keras.model): model to compute cam for
     image (tensor): input to model, shape (1, H, W, 3)
-    cls (int): class to compute cam with respect to
+    category_index (int): class to compute cam with respect to
     layer_name (str): relevant layer in model
-    H (int): input height
-    W (int): input width
     Return:
     cam ()
     """
