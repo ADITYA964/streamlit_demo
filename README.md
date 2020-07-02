@@ -5,8 +5,8 @@ Streamlitのデモ共有
 
 ## Deploy to heroku
 以下のサイトを参考にしてください。
-https://www.pluralsight.com/guides/deploying-image-classification-on-the-web-with-streamlit-and-heroku
-https://gilberttanner.com/blog/deploying-your-streamlit-dashboard-with-heroku
+* https://www.pluralsight.com/guides/deploying-image-classification-on-the-web-with-streamlit-and-heroku
+* https://gilberttanner.com/blog/deploying-your-streamlit-dashboard-with-heroku
 重要な点は、
 1. Herokuサーバーで動くために必要なPythonライブラリをrequirements.txtで追加
 2. Procfileとsetup.shを自分のherokuアカウント、アプリを動かすpythonファイル名に従って編集して追加
