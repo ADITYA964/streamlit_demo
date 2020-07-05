@@ -5,7 +5,6 @@ from keras.layers import Dense, GlobalAveragePooling2D
 from keras import backend as K
 import matplotlib.pyplot as plt
 import numpy as np
-import cv2
 from PIL import Image, ImageOps
 import streamlit as st
 
@@ -113,7 +112,9 @@ def get_heatmaps(image, model, funcs):
         cam = np.dot(spatial_map_val,weights)
         H, W = image.shape[1], image.shape[2]
         cam = np.maximum(cam, 0) # ReLU so we only get positive importance
-        cam = cv2.resize(cam, (W, H), cv2.INTER_NEAREST)
+        cam = Image.fromarray(cam)
+        cam = np.asarray(cam.resize((W,H),Image.ANTIALIAS))
+        #cam = cv2.resize(cam, (W, H), cv2.INTER_NEAREST)
         cam = cam / cam.max()
         return cam
     
