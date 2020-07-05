@@ -1,6 +1,5 @@
 ###### Requirements without Version Specifiers ######`
 streamlit
-opencv-python
 pillow
 matplotlib
 numpy
