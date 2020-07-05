@@ -3,7 +3,8 @@
 ## Description
 Streamlitのデモ共有
 
-## Deploy to heroku
+## Deploy to heroku 
+### Heroku git
 以下のサイトを参考にしてください。
 * https://www.pluralsight.com/guides/deploying-image-classification-on-the-web-with-streamlit-and-heroku
 * https://gilberttanner.com/blog/deploying-your-streamlit-dashboard-with-heroku
@@ -15,6 +16,13 @@ Streamlitのデモ共有
 
 * opencv-pythonをherokuで使うために[これ](https://qiita.com/haru1843/items/210cb08024195b9d1bc8)にしたがっていくつか設定変更する必要があります。
 * Aptfile はopencv用の追加ファイル
+
+### Github pipeline
+ディレクトリ内ファイル構成は変わらないです。アプリコードのあるgithubレポジトリとリンクさせることでpushされる度に自動的にdeployされるように以下のように設定します。
+1. Deployment methodでGithubを選択
+2. リンクさせる対象のgitレポジトリを検索・選択（今回はTaiki92777/streamlit_demoにリンクさせてある）
+3. Automatic deployをＯＮにする
+詳しくは[こちら](https://devcenter.heroku.com/articles/github-integration)
 
 ## Localでの動かし方
 1. このレポジトリのclone先に移動
