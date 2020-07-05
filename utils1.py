@@ -54,44 +54,43 @@ def load_coursera_model():
     
     base_model = DenseNet121(include_top=False) #(weights='densenet.hdf5', include_top=False)
     latest_iteration.text("Loaded DenseNet121")
-    bar.progress(1/19)
+    bar.progress(1/6)
         
     # add a global spatial average pooling layer
     x = base_model.output
     x = GlobalAveragePooling2D()(x)
     latest_iteration.text("Added a global spatial average pooling layer")
-    bar.progress(2/19)
+    bar.progress(2/6)
     
     # and a logistic layer
     predictions = Dense(len(labels), activation="sigmoid")(x)
     model = Model(inputs=base_model.input, outputs=predictions)
     latest_iteration.text("Added a logistic layer")
-    bar.progress(3/19)
+    bar.progress(3/6)
     
     model.load_weights("pretrained_model.h5")
     latest_iteration.text("Loaded pretrained weights")
-    bar.progress(4/19)
+    bar.progress(4/6)
     
     model._make_predict_function()
     latest_iteration.text("Compiled the model for prediction")
-    bar.progress(5/19)
+    bar.progress(5/6)
     
-    funcs = []
-    for i in range(len(labels)):
-        output_with_batch_dim = model.output
-        output_all_categories = output_with_batch_dim[0]
+    #funcs = []
+    output_with_batch_dim = model.output
+    output_all_categories = output_with_batch_dim[0]
+    spatial_map_layer = model.get_layer('conv5_block16_concat').output
+    grads = []
+    for i in range(14):
         y_c = output_all_categories[i]
-        spatial_map_layer = model.get_layer('conv5_block16_concat').output
-        grads_l = K.gradients(y_c, spatial_map_layer)
-        grads = grads_l[0]
-        spatial_map_and_gradient_function = K.function([model.input], [spatial_map_layer, grads])
-        funcs.append(spatial_map_and_gradient_function)
-        latest_iteration.text(f"Compiled the function for making heatmap of {labels[i]}")
-        bar.progress((i+6)/19)
-    
+        grads_l = K.gradients(y_c, spatial_map_layer)[0]
+        grads.append(grads_l)
+    spatial_map_and_gradient_function = K.function([model.input], [spatial_map_layer] + grads)
+    latest_iteration.text("Compiled heatmap function")
+    bar.progress(100)
     session = K.get_session()
     print('Loaded')
-    return model, funcs, session
+    return model, spatial_map_and_gradient_function, session
 
 @st.cache
 def get_prediction(image, model):
@@ -104,33 +103,29 @@ def get_prediction(image, model):
 
 @st.cache(suppress_st_warning=True, allow_output_mutation=True, hash_funcs=hash_funcs)
 def get_heatmaps(image, model, funcs):
-
-    def grad_cam(input_model, image, category_index, func):
-        spatial_map_all_dims, grads_val_all_dims = func([image])
-        spatial_map_val = spatial_map_all_dims[0]
-        grads_val = grads_val_all_dims[0]
+    x = preprocess(image)
+    results = funcs([x])
+    spatial_map_all_dims = results[0]
+    grads_val_all_dims = results[1:] # len = 14
+    spatial_map_val = spatial_map_all_dims[0]
+    heatmaps = []    
+    latest_iteration = st.empty()
+    bar = st.progress(0)
+    labels = ['Cardiomegaly', 'Emphysema', 'Effusion', 'Hernia', 'Infiltration', 'Mass', 'Nodule', 'Atelectasis',
+                'Pneumothorax', 'Pleural_Thickening', 'Pneumonia', 'Fibrosis', 'Edema', 'Consolidation']
+    for i in range(14):
+        grads_val = grads_val_all_dims[i][0]
         weights = grads_val.mean(axis=0).mean(axis=0)
         cam = np.dot(spatial_map_val,weights)
-        H, W = image.shape[1], image.shape[2]
+        H, W = x.shape[1], x.shape[2]
         cam = np.maximum(cam, 0) # ReLU so we only get positive importance
         cam = Image.fromarray(cam)
         cam = np.asarray(cam.resize((W,H),Image.ANTIALIAS))
         #cam = cv2.resize(cam, (W, H), cv2.INTER_NEAREST)
         cam = cam / cam.max()
-        return cam
-    
-    labels = ['Cardiomegaly', 'Emphysema', 'Effusion', 'Hernia', 'Infiltration', 'Mass', 'Nodule', 'Atelectasis',
-                'Pneumothorax', 'Pleural_Thickening', 'Pneumonia', 'Fibrosis', 'Edema', 'Consolidation']
-    
-    x = preprocess(image)
-    heatmaps = []
-    
-    latest_iteration = st.empty()
-    bar = st.progress(0)
-    for i in range(14):
-        # Update the progress bar with each iteration.
+        heatmaps.append(cam)
         latest_iteration.text(labels[i])
         bar.progress((i + 1)/14)
-        heatmaps.append(grad_cam(model, x, i, funcs[i]))
+    
     return heatmaps
 
