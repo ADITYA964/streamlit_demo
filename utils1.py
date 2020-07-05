@@ -41,6 +41,7 @@ def preprocess(image, H = 320, W = 320):
 # LOAD COURSERA MODEL
 @st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def load_coursera_model():
+    K.clear_session()
     """
     Model reference: Coursera AI for medicine
     """
