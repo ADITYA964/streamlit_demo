@@ -30,7 +30,7 @@ Streamlitのデモ共有
 3.  `streamlit run test.py`でLocalブラウザで実行
 
 ## Licence
-[MIT](https://github.com/Taiki92777/streamlit_demo/blob/master/LICENSE)
+[Apache 2.0](https://github.com/Taiki92777/streamlit_demo/blob/master/LICENSE)
 
 ## Author
 [T.Harada](https://github.com/Taiki92777)
