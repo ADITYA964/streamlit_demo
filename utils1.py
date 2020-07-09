@@ -103,14 +103,17 @@ def get_prediction(image, model):
 
 @st.cache(suppress_st_warning=True, allow_output_mutation=True, hash_funcs=hash_funcs)
 def get_heatmaps(image, model, funcs):
+    latest_iteration = st.empty()
+    bar = st.progress(0)
+    latest_iteration.text("Getting spatial map & gradients...")
     x = preprocess(image)
     results = funcs([x])
     spatial_map_all_dims = results[0]
     grads_val_all_dims = results[1:] # len = 14
     spatial_map_val = spatial_map_all_dims[0]
+    bar.progress(1/15)
+    
     heatmaps = []    
-    latest_iteration = st.empty()
-    bar = st.progress(0)
     labels = ['Cardiomegaly', 'Emphysema', 'Effusion', 'Hernia', 'Infiltration', 'Mass', 'Nodule', 'Atelectasis',
                 'Pneumothorax', 'Pleural_Thickening', 'Pneumonia', 'Fibrosis', 'Edema', 'Consolidation']
     for i in range(14):
@@ -121,11 +124,10 @@ def get_heatmaps(image, model, funcs):
         cam = np.maximum(cam, 0) # ReLU so we only get positive importance
         cam = Image.fromarray(cam)
         cam = np.asarray(cam.resize((W,H),Image.ANTIALIAS))
-        #cam = cv2.resize(cam, (W, H), cv2.INTER_NEAREST)
         cam = cam / cam.max()
         heatmaps.append(cam)
         latest_iteration.text(labels[i])
-        bar.progress((i + 1)/14)
+        bar.progress((i + 2)/15)
     
     return heatmaps
 
