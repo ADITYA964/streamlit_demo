@@ -51,7 +51,7 @@ def main():
                         st.write("")
                         i = labels.index(label)
                         heatmap = heatmaps[i]
-                        plt.title("Heatmap of "+ label,fontsize=20)
+                        plt.title("Heatmap - "+ label + f": {probas[i]:.3f}",fontsize=20)
                         plt.axis('off')
                         plt.imshow(ImageOps.fit(image, (320,320), Image.ANTIALIAS), cmap='gray')
                         plt.imshow(heatmap, cmap='magma', alpha=min(0.5, probas[i]))
