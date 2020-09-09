@@ -38,6 +38,7 @@ def main():
                 if probas is not None:
                     X = range(len(probas))
                     for label in sorted_labels:
+                        i = labels.index(label)
                         st.write(label+f": {probas[i]:.3f}")
                     
                     st.write("")
@@ -82,6 +83,7 @@ def main():
                         if probas is not None:
                             X = range(len(probas))
                             for label in sorted_labels:
+                                i = labels.index(label)
                                 st.write(label+f": {probas[i]:.3f}")
 
                             st.write("")
