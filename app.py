@@ -37,21 +37,18 @@ def main():
                 st.write("Done!!")
                 if probas is not None:
                     X = range(len(probas))
-                    plt.title("Multi-diseases detection",fontsize=15)
-                    plt.ylabel('Predicted probability',fontsize=12)
-                    plt.bar(X, sorted_probas)
-                    plt.xticks(X, sorted_labels, rotation=45)
-                    st.pyplot()
-
+                    for label in sorted_labels:
+                        st.write(label+f": {probas[i]:.3f}")
+                    
                     st.write("")
                     st.write("Making heatmaps...")
                     heatmaps = get_heatmaps(image, model, funcs)
                     st.write("Done!!")
                     for label in sorted_labels:
-                        st.write("")
                         i = labels.index(label)
+                        st.write("Heatmap - "+ label + f": {probas[i]:.3f}")
                         heatmap = heatmaps[i]
-                        plt.title("Heatmap - "+ label + f": {probas[i]:.3f}",fontsize=20)
+                        #plt.title("Heatmap - "+ label + f": {probas[i]:.3f}",fontsize=20)
                         plt.axis('off')
                         plt.imshow(ImageOps.fit(image, (320,320), Image.ANTIALIAS), cmap='gray')
                         plt.imshow(heatmap, cmap='magma', alpha=min(0.5, probas[i]))
@@ -84,21 +81,18 @@ def main():
                         st.write("Done!!")
                         if probas is not None:
                             X = range(len(probas))
-                            plt.title("Multi-diseases detection",fontsize=15)
-                            plt.ylabel('Predicted probability',fontsize=12)
-                            plt.bar(X, sorted_probas)
-                            plt.xticks(X, sorted_labels, rotation=45)
-                            st.pyplot()
+                            for label in sorted_labels:
+                                st.write(label+f": {probas[i]:.3f}")
 
                             st.write("")
                             st.write("Making heatmaps...")
                             heatmaps = get_heatmaps(image, model, funcs)
                             st.write("Done!!")
                             for label in sorted_labels:
-                                st.write("")
                                 i = labels.index(label)
+                                st.write("Heatmap - "+ label + f": {probas[i]:.3f}")
                                 heatmap = heatmaps[i]
-                                plt.title("Heatmap - "+ label + f": {probas[i]:.3f}",fontsize=20)
+                                #plt.title("Heatmap - "+ label + f": {probas[i]:.3f}",fontsize=20)
                                 plt.axis('off')
                                 plt.imshow(ImageOps.fit(image, (320,320), Image.ANTIALIAS), cmap='gray')
                                 plt.imshow(heatmap, cmap='magma', alpha=min(0.5, probas[i]))
