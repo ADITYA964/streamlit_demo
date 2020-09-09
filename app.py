@@ -7,8 +7,11 @@ from keras import backend as K
 plt.rcParams['figure.figsize'] = [14, 10]
 
 def main():
-    st.title("Image Classification with CheXNet")
-    st.header("Task: Multi-diseases detection")
+    st.title("APP")
+    st.header("CheXNet. ディープラーニングを用いた胸部X線撮影における放射線技師レベルの肺炎検出")
+    st.text("Task: 胸部X線 > 複数疾患検出")
+    st.text("Department: 呼吸器内科　循環器内科　感染症内科　放射線科")
+    st.text("Citation: arXiv:1711.05225v3")
     st.write("Set up...")
     model, funcs, session = load_coursera_model() 
     st.write("Done!!")
