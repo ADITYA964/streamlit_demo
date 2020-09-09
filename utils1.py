@@ -45,8 +45,8 @@ def load_coursera_model():
     """
     Model reference: Coursera AI for medicine
     """
-    labels = ['Cardiomegaly', 'Emphysema', 'Effusion', 'Hernia', 'Infiltration', 'Mass', 'Nodule', 'Atelectasis',
-              'Pneumothorax', 'Pleural_Thickening', 'Pneumonia', 'Fibrosis', 'Edema', 'Consolidation']
+    labels = ['心肥大', '肺気腫', '胸水', '横隔膜ヘルニア', '浸潤', '腫瘤', '結節', '無気肺',
+              '気胸', '胸膜肥厚', '肺炎', '間質性肺炎', '肺水腫', 'コンソリデーション']
 
     # create the base pre-trained model
     latest_iteration = st.empty()
@@ -96,8 +96,8 @@ def load_coursera_model():
 def get_prediction(image, model):
     # return predicted labels 
     x = preprocess(image)
-    labels = ['Cardiomegaly', 'Emphysema', 'Effusion', 'Hernia', 'Infiltration', 'Mass', 'Nodule', 'Atelectasis',
-                'Pneumothorax', 'Pleural_Thickening', 'Pneumonia', 'Fibrosis', 'Edema', 'Consolidation']
+    labels = ['心肥大', '肺気腫', '胸水', '横隔膜ヘルニア', '浸潤', '腫瘤', '結節', '無気肺',
+              '気胸', '胸膜肥厚', '肺炎', '間質性肺炎', '肺水腫', 'コンソリデーション']
     probas = model.predict(x)[0]
     return labels, probas
 
@@ -114,8 +114,8 @@ def get_heatmaps(image, model, funcs):
     bar.progress(1/15)
     
     heatmaps = []    
-    labels = ['Cardiomegaly', 'Emphysema', 'Effusion', 'Hernia', 'Infiltration', 'Mass', 'Nodule', 'Atelectasis',
-                'Pneumothorax', 'Pleural_Thickening', 'Pneumonia', 'Fibrosis', 'Edema', 'Consolidation']
+    labels = ['心肥大', '肺気腫', '胸水', '横隔膜ヘルニア', '浸潤', '腫瘤', '結節', '無気肺',
+              '気胸', '胸膜肥厚', '肺炎', '間質性肺炎', '肺水腫', 'コンソリデーション']
     for i in range(14):
         grads_val = grads_val_all_dims[i][0]
         weights = grads_val.mean(axis=0).mean(axis=0)
